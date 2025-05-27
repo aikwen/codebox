@@ -4,7 +4,8 @@ import(
 	"net/http"
 )
 
-func (app *application) routes() *http.ServeMux {
+// 修改返回值为 http.Handler
+func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 
@@ -12,5 +13,5 @@ func (app *application) routes() *http.ServeMux {
 	mux.HandleFunc("/codebox/view", app.snippetView)
 	mux.HandleFunc("/codebox/create", app.snippetCreate)
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
-	return mux
+	return app.recoverPanic(app.logRequest(secureHeaders(mux)))
 }
