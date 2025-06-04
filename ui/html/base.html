@@ -6,6 +6,7 @@
     <meta charset='utf-8'>
     <title>{{template "title" .}} - codebox</title>
     <link rel="shortcut icon" href="/static/img/favicon.ico" type="image/x-icon" />
+    <link rel='stylesheet' href='/static/css/milligram.min.css'>
     <link rel='stylesheet' href='/static/css/main.css'>
 </head>
 
@@ -13,9 +14,7 @@
     <!-- title -->
     <header>
         <img class="logo" src="/static/img/logo.png" alt="">
-        <h1>
-            <a href='/' class="level-item">Codebox</a>
-        </h1>
+        <a href='/' class="level-item">Codebox</a>
     </header>
 
 
@@ -26,7 +25,7 @@
         {{template "main" .}}
     </main>
     <footer>
-        Powered by  <a href='https://golang.org/'> Go  </a>   in  {{.CurrentYear}}
+        Powered by <a href='https://golang.org/'> Go </a> in {{.CurrentYear}}
     </footer>
 </body>
 

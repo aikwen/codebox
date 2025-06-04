@@ -2,19 +2,23 @@
 
 
 {{define "main"}}
-    {{with .Snippet}}
-    <div class="snippet">
-        <div class="metadata">
-            <strong>{{.Title}}</strong>
-            <strong>#{{.ID}}</strong>
-        </div>
-        <pre>
-            <code>{{.Content}}</code>
-        </pre>
-        <div class="metadata">
-            <time>Created: {{humanDate .Created}} </time>
-            <time>Expires: {{humanDate .Expires}} </time>
+{{with .Snippet}}
+<div class="snippet">
+    <div class="metadata container">
+        <div class="row">
+            <strong class="column">{{.Title}}</strong>
+            <strong class="column text-right">#{{.ID}}</strong>
         </div>
     </div>
-    {{end}}
+    <pre>
+        <code>{{.Content}}</code>
+    </pre>
+    <div class="container">
+        <div class="metadata row">
+            <time class="column">Created: {{humanDate .Created}} </time>
+            <time class="column text-right">Expires: {{humanDate .Expires}} </time>
+        </div>
+    </div>
+</div>
+{{end}}
 {{end}}

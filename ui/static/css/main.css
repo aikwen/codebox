@@ -1,6 +1,6 @@
-body{
+body {
     margin-top: 0.2vh;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,21 +11,21 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20vh;
+    height: 200px;
     flex-grow: 0;
+    gap: 10px
 }
 
 .logo {
     height: 50%;
     width: auto;
-    margin-right: 0.5cm;
 }
 
 
-header h1 a {
+header a {
     color: black;
     text-decoration: none;
-    font-size: 1.5cm;
+    font-size: 4.6rem;
 }
 
 
@@ -34,23 +34,32 @@ nav {
     align-items: center;
     justify-content: left;
     width: 50%;
-    height: 5vh;
+    min-height: 4.6rem;
     padding-left: 20px;
     flex-grow: 0;
     border-top: 1px groove black;
     border-bottom: 1px groove black;
+    gap: 10px;
 }
 
 nav a {
     color: black;
-    text-decoration: none ;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #0056b3;
 }
 
 main {
-    -background-color: rgb(210, 210, 210);
-    padding-left: 20px;
+    margin-top: 2vh;
+    padding: 0 20px;
     width: 50%;
     flex-grow: 1;
+}
+
+.snippet {
+    width: 100%;
 }
 
 footer {
@@ -60,8 +69,31 @@ footer {
     align-items: center;
     justify-content: center;
     flex-grow: 0;
+    gap: 10px;
 }
 
-footer a {
-    padding-left: 10px;
+.form-content textarea {
+    min-height: 30vh;
+    resize: vertical;
+}
+
+code {
+    font-size: 1.8rem;
+}
+
+.container {
+    padding: 0;
+}
+
+.row {
+    margin: 0;
+    width: 100%;
+}
+
+.row .column {
+    padding: 0;
+}
+
+.text-right {
+    text-align: right;
 }
