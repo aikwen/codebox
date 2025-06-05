@@ -97,3 +97,7 @@ code {
 .text-right {
     text-align: right;
 }
+
+form .error {
+    color: red;
+}

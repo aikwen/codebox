@@ -10,6 +10,7 @@ import (
 
 	// import models package
 	"github.com/aikwen/codebox/internal/models"
+	"github.com/go-playground/form/v4"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -20,6 +21,7 @@ type application struct{
 	infoLog *log.Logger
 	snippets *models.SnippetModel
 	templateCache map[string]*template.Template
+	formDecoder *form.Decoder
 }
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -62,12 +64,14 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	formDecoder := form.NewDecoder()
 	// application
 	app := &application{
 		errorLog: errorLog,
 		infoLog: infoLog,
 		snippets: &models.SnippetModel{DB: db},
 		templateCache: templateCache,
+		formDecoder: formDecoder,
 	}
 
 	infoLog.Printf("starting server on %s", *addr)
