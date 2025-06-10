@@ -1,16 +1,19 @@
 package main
 
 import (
+	"crypto/tls"
 	"database/sql"
 	"flag"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
-
+	"time"
 	// import models package
 	"github.com/aikwen/codebox/internal/models"
 	"github.com/go-playground/form/v4"
+	"github.com/alexedwards/scs/mysqlstore"
+	"github.com/alexedwards/scs/v2"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -22,6 +25,7 @@ type application struct{
 	snippets *models.SnippetModel
 	templateCache map[string]*template.Template
 	formDecoder *form.Decoder
+	sessionManager *scs.SessionManager
 }
 
 func openDB(dsn string) (*sql.DB, error) {
@@ -65,6 +69,13 @@ func main() {
 	}
 
 	formDecoder := form.NewDecoder()
+
+
+	sessionManager := scs.New()
+	sessionManager.Store = mysqlstore.New(db)
+	sessionManager.Lifetime = 12 * time.Hour
+
+	sessionManager.Cookie.Secure = true
 	// application
 	app := &application{
 		errorLog: errorLog,
@@ -72,14 +83,24 @@ func main() {
 		snippets: &models.SnippetModel{DB: db},
 		templateCache: templateCache,
 		formDecoder: formDecoder,
+		sessionManager: sessionManager,
 	}
 
 	infoLog.Printf("starting server on %s", *addr)
+
+	tlsConfig := &tls.Config{
+		CurvePreferences: []tls.CurveID{tls.X25519, tls.CurveP256},
+	}
+
 	server := http.Server{
 		Addr:    *addr,
 		Handler: app.routes(),
 		ErrorLog: errorLog,
+		TLSConfig: tlsConfig,
+		IdleTimeout: time.Minute,
+		ReadTimeout: 5 * time.Second,
+		WriteTimeout: 10 * time.Second,
 	}
-	err = server.ListenAndServe()
+	err = server.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	errorLog.Fatal(err)
 }

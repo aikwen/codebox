@@ -53,9 +53,9 @@ func (app *application)snippetView(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+
 	data := app.newTemplateData(r)
 	data.Snippet = snippet
-
 	app.render(w, http.StatusOK, "view.html", data)
 }
 
@@ -93,6 +93,6 @@ func (app *application)snippetCreatePost(w http.ResponseWriter, r *http.Request)
 		app.serverError(w, err)
 		return
 	}
-
+	app.sessionManager.Put(r.Context(), "flash", "snippet successfully created!")
 	http.Redirect(w, r, fmt.Sprintf("/codebox/view/%d", id), http.StatusSeeOther)
 }
