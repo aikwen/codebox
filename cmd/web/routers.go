@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/aikwen/codebox/ui"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
 )
@@ -16,11 +17,10 @@ func (app *application) routes() http.Handler {
 		app.notFound(w)
 	})
 
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
+	fileServer := http.FileServer(http.FS(ui.Files))
 
 	router.Handler(http.MethodGet, "/static/*filepath",
-		http.StripPrefix("/static", fileServer))
-
+		fileServer)
 	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf, app.authenticate)
 	router.Handler(http.MethodGet, "/", dynamic.ThenFunc(app.home))
 	router.Handler(http.MethodGet, "/codebox/view/:id", dynamic.ThenFunc(app.snippetView))
